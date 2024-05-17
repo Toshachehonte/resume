@@ -1,31 +1,31 @@
 document.getElementById('vacancy-form').addEventListener('submit', function(event) {
     event.preventDefault();
     const vacancy = document.getElementById('vacancy').value.toLowerCase();
+    const vacancyLink = document.getElementById('vacancy-link').value;
     const resumeOutput = document.getElementById('resume-output');
     let personalizedResume = '';
 
-    if (vacancy.includes('военный штаб')) {
-        personalizedResume = `
-            <h2>Опыт работы</h2>
-            <p>Ведение делопроизводства в условиях военной службы.</p>
-            <p>Работа с конфиденциальной информацией и секретными документами.</p>
-            <p>Знание военных нормативных актов и владение специальными программами.</p>
-        `;
-    } else if (vacancy.includes('коммерческая организация')) {
-        personalizedResume = `
-            <h2>Опыт работы</h2>
-            <p>Организация документооборота в офисе.</p>
-            <p>Работа с корпоративными документами и деловая переписка.</p>
-            <p>Знание CRM систем и работа с клиентами и партнерами.</p>
-        `;
-    } else {
-        personalizedResume = `
-            <h2>Опыт работы</h2>
-            <p>Ведение делопроизводства и организация документооборота.</p>
-            <p>Знание нормативных документов и внимательность к деталям.</p>
-            <p>Владение офисными программами.</p>
-        `;
-    }
+    // Здесь можно добавить логику для подстановки данных в резюме на основе введенной вакансии
+    // В текущей версии будем просто загружать готовые шаблоны резюме
 
-    resumeOutput.innerHTML = personalizedResume;
+    fetch('resume_template_ua.html')
+        .then(response => response.text())
+        .then(data => {
+            // Пример использования данных шаблона для персонализации
+            personalizedResume = data.replace('{{vacancy}}', vacancy);
+            resumeOutput.innerHTML = personalizedResume;
+        });
+
+    // Если есть ссылка на вакансию, можно использовать её для дополнительного анализа
+    if (vacancyLink) {
+        // Логика для обработки ссылки на вакансию
+        // Например, можно использовать fetch для получения данных по ссылке и анализа их
+        fetch(vacancyLink)
+            .then(response => response.text())
+            .then(data => {
+                // Пример использования данных по ссылке
+                // Здесь можно добавить парсинг и анализ данных по ссылке
+                console.log(data);
+            });
+    }
 });
