@@ -5,7 +5,6 @@ document.getElementById('vacancy-form').addEventListener('submit', function(even
     const resumeOutput = document.getElementById('resume-output');
     let personalizedResume = '';
 
-    // Если введено название вакансии, используем шаблонное резюме
     fetch('resume_template_ua.html')
         .then(response => response.text())
         .then(data => {
@@ -13,20 +12,15 @@ document.getElementById('vacancy-form').addEventListener('submit', function(even
             resumeOutput.innerHTML = personalizedResume;
         });
 
-    // Если введена ссылка на вакансию, анализируем данные по ссылке
     if (vacancyLink) {
         fetch(vacancyLink)
             .then(response => response.text())
             .then(data => {
-                // Парсим HTML страницы вакансии
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
+                const jobTitle = doc.querySelector('h1')?.innerText || 'Не удалось получить заголовок';
+                const jobDescription = doc.querySelector('.job-description')?.innerText || 'Не удалось получить описание';
 
-                // Пример извлечения данных (заголовок вакансии и описание)
-                const jobTitle = doc.querySelector('h1').innerText;
-                const jobDescription = doc.querySelector('.job-description').innerText;
-
-                // Вставляем извлеченные данные в шаблон резюме
                 personalizedResume = personalizedResume.replace('{{vacancy}}', jobTitle);
                 personalizedResume += `<p>${jobDescription}</p>`;
                 resumeOutput.innerHTML = personalizedResume;
